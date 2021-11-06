@@ -25,17 +25,22 @@ import programmingtheiot.common.ConfigConst;
 public class SystemStateData extends BaseIotData implements Serializable
 {
 	// static
-	
+	private static final long serialVersionUID = 4L;
 	
 	// private var's
+	private int command = ConfigConst.DEFAULT_COMMAND;
+	private List<SystemPerformanceData> sysPerfDataList = null;
+	private List<SensorData> sensorDataList = null;
 	
-    
     
 	// constructors
 	
 	public SystemStateData()
 	{
 		super();
+		super.setName(ConfigConst.SYS_STATE_DATA);
+		this.sysPerfDataList = new ArrayList<>();
+		this.sensorDataList = new ArrayList<>();
 	}
 	
 	
@@ -43,31 +48,43 @@ public class SystemStateData extends BaseIotData implements Serializable
 	
 	public boolean addSensorData(SensorData data)
 	{
+		if(data instanceof SensorData) {
+			super.updateTimeStamp();
+			this.sensorDataList.add(data);
+			return true;
+		}
 		return false;
 	}
 	
 	public boolean addSystemPerformanceData(SystemPerformanceData data)
 	{
+		if(data instanceof SystemPerformanceData) {
+			super.updateTimeStamp();
+			sysPerfDataList.add(data);
+			return true;
+		}
 		return false;
 	}
 	
 	public int getCommand()
 	{
-		return 0;
+		return this.command;
 	}
 	
 	public List<SensorData> getSensorDataList()
 	{
-		return null;
+		return this.sensorDataList;
 	}
 	
 	public List<SystemPerformanceData> getSystemPerformanceDataList()
 	{
-		return null;
+		return this.sysPerfDataList;
 	}
 	
 	public void setCommand(int actionCmd)
 	{
+		super.updateTimeStamp();
+		this.command = actionCmd;
 	}
 	
 	/**
@@ -96,6 +113,18 @@ public class SystemStateData extends BaseIotData implements Serializable
 	 */
 	protected void handleUpdateData(BaseIotData data)
 	{
+		if(data instanceof SystemStateData) {
+			SystemStateData sData = (SystemStateData)data;
+			this.setCommand(sData.getCommand());
+			List<SystemPerformanceData> sysPerfDataList = sData.getSystemPerformanceDataList();
+			for(int i = 0; i < sysPerfDataList.size(); i++) {
+				this.addSystemPerformanceData(sysPerfDataList.get(i));
+			}
+			List<SensorData> sensorDataList = sData.getSensorDataList();
+			for(int i = 0; i < sensorDataList.size(); i++) {
+				this.addSensorData(sensorDataList.get(i));
+			}
+		}
 	}
 	
 }

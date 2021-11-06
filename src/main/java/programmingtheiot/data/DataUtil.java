@@ -55,42 +55,82 @@ public class DataUtil
 	
 	public String actuatorDataToJson(ActuatorData actuatorData)
 	{
-		return null;
+		String jsonData = null;
+		if(actuatorData != null) {
+			Gson converter = new Gson();
+			jsonData = converter.toJson(actuatorData);
+		}
+		return jsonData;
 	}
 	
 	public String sensorDataToJson(SensorData sensorData)
 	{
-		return null;
+		String jsonData = null;
+		if(sensorData != null) {
+			Gson converter = new Gson();
+			jsonData = converter.toJson(sensorData);
+		}
+		return jsonData;
 	}
 	
 	public String systemPerformanceDataToJson(SystemPerformanceData sysPerfData)
 	{
-		return null;
+		String jsonData = null;
+		if(sysPerfData != null) {
+			Gson converter = new Gson();
+			jsonData = converter.toJson(sysPerfData);
+		}
+		return jsonData;
 	}
 	
 	public String systemStateDataToJson(SystemStateData sysStateData)
 	{
-		return null;
+		String jsonData = null;
+		if(sysStateData != null) {
+			Gson converter = new Gson();
+			jsonData = converter.toJson(sysStateData);
+		}
+		return jsonData;
 	}
 	
 	public ActuatorData jsonToActuatorData(String jsonData)
 	{
-		return null;
+		ActuatorData actuatorData = null;
+		if(jsonData != null && jsonData.trim().length() > 0) {
+			Gson converter = new Gson();
+			actuatorData = converter.fromJson(jsonData, ActuatorData.class);
+		}
+		return actuatorData;
 	}
 	
 	public SensorData jsonToSensorData(String jsonData)
 	{
-		return null;
+		SensorData sensorData = null;
+		if(jsonData != null && jsonData.trim().length() > 0) {
+			Gson converter = new Gson();
+			sensorData = converter.fromJson(jsonData, SensorData.class);
+		}
+		return sensorData;
 	}
 	
 	public SystemPerformanceData jsonToSystemPerformanceData(String jsonData)
 	{
-		return null;
+		SystemPerformanceData sysPerfData = null;
+		if(jsonData != null && jsonData.trim().length() > 0) {
+			Gson converter = new Gson();
+			sysPerfData = converter.fromJson(jsonData, SystemPerformanceData.class);
+		}
+		return sysPerfData;
 	}
 	
 	public SystemStateData jsonToSystemStateData(String jsonData)
 	{
-		return null;
+		SystemStateData systemStateData = null;
+		if(jsonData != null && jsonData.trim().length() > 0) {
+			Gson converter = new Gson();
+			systemStateData = converter.fromJson(jsonData, SystemStateData.class);
+		}
+		return systemStateData;
 	}
 	
 }

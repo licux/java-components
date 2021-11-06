@@ -19,10 +19,13 @@ import programmingtheiot.common.ConfigConst;
 public class ActuatorData extends BaseIotData implements Serializable
 {
 	// static
-	
+	private static final long serialVersionUID = 2L;
 	
 	// private var's
-	
+	private int command = 0;
+	private float value = 0.0f;
+	private String stateData = "";
+	private boolean isResponse = false;
     
     
 	// constructors
@@ -41,25 +44,29 @@ public class ActuatorData extends BaseIotData implements Serializable
 	
 	public int getCommand()
 	{
-		return 0;
+		return this.command;
 	}
 	
 	public float getValue()
 	{
-		return 0.0f;
+		return this.value;
 	}
 	
 	public boolean isResponseFlagEnabled()
 	{
-		return false;
+		return this.isResponse;
 	}
 	
 	public void setCommand(int command)
 	{
+		super.updateTimeStamp();
+		this.command = command;
 	}
 	
 	public void setValue(float val)
 	{
+		super.updateTimeStamp();
+		this.value = val;
 	}
 	
 	/**
@@ -88,6 +95,16 @@ public class ActuatorData extends BaseIotData implements Serializable
 	 */
 	protected void handleUpdateData(BaseIotData data)
 	{
+		if(data instanceof ActuatorData) {
+			ActuatorData aData = (ActuatorData)data;
+			this.setCommand(aData.getCommand());
+			this.setValue(aData.getValue());
+			this.setStatusCode(aData.getStatusCode());
+			
+			if(aData.isResponseFlagEnabled()) {
+				this.isResponse = true;
+			}
+		}
 	}
 	
 }

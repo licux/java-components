@@ -41,6 +41,8 @@ public class SystemPerformanceManager
 	private Runnable taskRunner = null;
 	private boolean isStarted = false;
 	
+	private IDataMessageListener dataMsgListener = null;
+	
 	
 	// constructors
 	
@@ -71,13 +73,26 @@ public class SystemPerformanceManager
 	
 	public void handleTelemetry()
 	{
-		float cpuUtilPct = this.cpuUtilTask.getTelemetryValue();
-		float memUtilPct = this.memUtilTask.getTelemetryValue();
-		_Logger.info("Handle telemetry results: cpuTil = " + cpuUtilPct + ", memUtil = " + memUtilPct);
+		float cpuUtil = this.cpuUtilTask.getTelemetryValue();
+		float memUtil = this.memUtilTask.getTelemetryValue();
+		_Logger.info("Handle telemetry results: cpuTil = " + cpuUtil + ", memUtil = " + memUtil);
+		
+		SystemPerformanceData spd = new SystemPerformanceData();
+		spd.setLocationID(this.locationID);
+		spd.setCpuUtilization(cpuUtil);
+		spd.setMemoryUtilization(memUtil);
+		
+		if(this.dataMsgListener != null) {
+			this.dataMsgListener.handleSystemPerformanceMessage(ResourceNameEnum.GDA_SYSTEM_PERF_MSG_RESOURCE, spd);
+		}
+		
 	}
 	
 	public void setDataMessageListener(IDataMessageListener listener)
 	{
+		if(listener != null) {
+			this.dataMsgListener = listener;
+		}
 	}
 	
 	public void startManager()
