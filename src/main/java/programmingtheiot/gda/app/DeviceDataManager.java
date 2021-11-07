@@ -173,7 +173,19 @@ public class DeviceDataManager implements IDataMessageListener
 		this.sysPerfMgr.startManager();
 		
 		if(this.enableMqttClient) {
-//			this.mqttClient.connectClient();
+			try {
+				int qos = ConfigConst.DEFAULT_QOS;
+				if(this.mqttClient.connectClient()) {
+					this.mqttClient.subscribeToTopic(ResourceNameEnum.CDA_ACTUATOR_RESPONSE_RESOURCE, qos);
+					this.mqttClient.subscribeToTopic(ResourceNameEnum.CDA_SENSOR_MSG_RESOURCE, qos);
+					this.mqttClient.subscribeToTopic(ResourceNameEnum.CDA_SYSTEM_PERF_MSG_RESOURCE, qos);
+					_Logger.info("MQTT client connection started.");
+				}else {
+					_Logger.warning("MQTT client conection start failed.");
+				}
+			}catch(Exception e) {
+				_Logger.warning("Failed to start MQTT client");
+			}
 		}
 		if(this.enableCoapServer) {
 //			this.coapServer.startServer();	
@@ -195,7 +207,19 @@ public class DeviceDataManager implements IDataMessageListener
 		this.sysPerfMgr.stopManager();
 		
 		if(this.enableMqttClient) {
-//			this.mqttClient.disconnectClient();
+			try {
+				if(this.mqttClient.disconnectClient()) {
+					this.mqttClient.unsubscribeFromTopic(ResourceNameEnum.CDA_ACTUATOR_RESPONSE_RESOURCE);
+					this.mqttClient.unsubscribeFromTopic(ResourceNameEnum.CDA_SENSOR_MSG_RESOURCE);
+					this.mqttClient.unsubscribeFromTopic(ResourceNameEnum.CDA_SYSTEM_PERF_MSG_RESOURCE);
+					_Logger.info("Stopped MQTT client");
+				}else {
+					_Logger.info("Failed to stop MQTT client");
+				}
+			}catch(Exception e) {
+				_Logger.warning("Failed to stop MQTT client");
+			}
+			this.mqttClient.disconnectClient();
 		}
 		if(this.enableCoapServer) {
 //			this.coapServer.stopServer();	
@@ -225,7 +249,8 @@ public class DeviceDataManager implements IDataMessageListener
 		this.sysPerfMgr.setDataMessageListener(this);
 		
 		if(this.enableMqttClient) {
-			// Todo
+			this.mqttClient = new MqttClientConnector();
+			this.mqttClient.setDataMessageListener(this);
 		}
 		if(this.enableCoapServer) {
 			// Todo	
