@@ -32,7 +32,7 @@ public class GenericCoapResourceHandler extends CoapResource
 		Logger.getLogger(GenericCoapResourceHandler.class.getName());
 	
 	// params
-	
+	protected ResourceNameEnum resourceName = null;
 	
 	// constructors
 	
@@ -44,6 +44,7 @@ public class GenericCoapResourceHandler extends CoapResource
 	public GenericCoapResourceHandler(ResourceNameEnum resource)
 	{
 		this(resource.getResourceName());
+		this.resourceName = resource;
 	}
 	
 	/**

@@ -164,7 +164,9 @@ public class DeviceDataManager implements IDataMessageListener
 	
 	public void setActuatorDataListener(String name, IActuatorDataListener listener)
 	{
-		
+		if(listener != null) {
+			this.actuatorDataListener = listener;
+		}
 	}
 	
 	public void startManager()
@@ -188,7 +190,7 @@ public class DeviceDataManager implements IDataMessageListener
 			}
 		}
 		if(this.enableCoapServer) {
-//			this.coapServer.startServer();	
+			this.coapServer.startServer();
 		}
 		if(this.enableCloudClient) {
 //			this.cloudClient.connectClient();
@@ -222,7 +224,7 @@ public class DeviceDataManager implements IDataMessageListener
 			this.mqttClient.disconnectClient();
 		}
 		if(this.enableCoapServer) {
-//			this.coapServer.stopServer();	
+			this.coapServer.stopServer();	
 		}
 		if(this.enableCloudClient) {
 //			this.cloudClient.disconnectClient();
@@ -253,7 +255,8 @@ public class DeviceDataManager implements IDataMessageListener
 			this.mqttClient.setDataMessageListener(this);
 		}
 		if(this.enableCoapServer) {
-			// Todo	
+			this.coapServer = new CoapServerGateway(this);
+//			this.coapServer.setDataMessageListener(this);
 		}
 		if(this.enableCloudClient) {
 			// Todo
