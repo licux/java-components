@@ -108,6 +108,9 @@ public class DeviceDataManager implements IDataMessageListener
 		if(!data.isResponseFlagEnabled() || data.hasError()) {
 			_Logger.warning("Received ActuatorData has Error!");
 		}
+		if(this.actuatorDataListener != null) {
+			this.actuatorDataListener.onActuatorDataUpdate(data);
+		}
 		return true;
 	}
 
@@ -249,7 +252,7 @@ public class DeviceDataManager implements IDataMessageListener
 	{
 		this.sysPerfMgr = new SystemPerformanceManager();
 		this.sysPerfMgr.setDataMessageListener(this);
-		
+
 		if(this.enableMqttClient) {
 			this.mqttClient = new MqttClientConnector();
 			this.mqttClient.setDataMessageListener(this);

@@ -32,21 +32,21 @@ public class UpdateTelemetryResourceHandler extends GenericCoapResourceHandler {
 	public void handleDELETE(CoapExchange context)
 	{
 		_Logger.info("handleDELETE is called in UpdateTelemetryResourceHandler");
-		context.respond(ResponseCode.NOT_ACCEPTABLE);
+		context.respond(ResponseCode.DELETED);
 	}
 	
 	@Override
 	public void handleGET(CoapExchange context)
 	{
 		_Logger.info("handleGET is called in UpdateTelemetryResourceHandler");
-		context.respond(ResponseCode.NOT_ACCEPTABLE);
+		context.respond(ResponseCode.CONTENT);
 	}
 	
 	@Override
 	public void handlePOST(CoapExchange context)
 	{
 		_Logger.info("handlePOST is called in UpdateTelemetryResourceHandler");
-		context.respond(ResponseCode.NOT_ACCEPTABLE);
+		context.respond(ResponseCode.CHANGED);
 	}
 	
 	@Override

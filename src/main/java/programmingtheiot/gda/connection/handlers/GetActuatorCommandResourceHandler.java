@@ -23,6 +23,12 @@ public class GetActuatorCommandResourceHandler extends GenericCoapResourceHandle
 	public GetActuatorCommandResourceHandler(ResourceNameEnum resource) {
 		super(resource);
 		super.setObservable(true);
+		
+		// For Debug purpose
+		this.actuatorData = new ActuatorData();
+		this.actuatorData.setLatitude(1.0f);
+		this.actuatorData.setLocationID("test location");
+		this.actuatorData.setLongitude(5.5f);
 	}
 
 	public GetActuatorCommandResourceHandler(String resourceName) {
@@ -78,7 +84,17 @@ public class GetActuatorCommandResourceHandler extends GenericCoapResourceHandle
 
 	@Override
 	public boolean onActuatorDataUpdate(ActuatorData data) {
-		// TODO Auto-generated method stub
+		if(data != null) {
+			if(this.actuatorData == null) {
+				this.actuatorData = new ActuatorData();
+			}
+			this.actuatorData.updateData(data);
+			
+			super.changed();
+			_Logger.fine("Actuator data updated for URI: " +super.getURI() + ": Data value = " + this.actuatorData.getValue());
+			
+			return true;
+		}
 		return false;
 	}
 }
